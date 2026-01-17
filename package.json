@@ -3,7 +3,7 @@
   "module": "src/index.ts",
   "type": "module",
   "scripts": {
-    "build": "bun build src/cli/git.ts --compile --target=bun-x64 --outfile C:/Users/nelso/Documents/Projects/git-custom/git/bin/git.exe",
+    "build:git": "bun build src/git.ts --compile --target=bun-x64 --outfile C:/Users/nelso/Documents/Projects/git-custom/git/bin/git.exe",
     "build:bash": "bun build src/cli/bash.ts --compile --target=bun-x64 --outfile C:/Users/nelso/Documents/Projects/git-custom/git/bin/bash.exe",
     "build:sh": "bun build src/cli/sh.ts --compile --target=bun-x64 --outfile C:/Users/nelso/Documents/Projects/git-custom/git/bin/sh.exe"
   },
