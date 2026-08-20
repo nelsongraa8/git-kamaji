@@ -27,6 +27,25 @@ Better Windows/WSL path resolution
 
 Optional logging and metrics
 
+## Build from source
+
+Requirements: [Bun](https://bun.sh) installed.
+
+```bash
+bun install
+bun run build
+```
+
+This produces the following executables under `dist/`:
+
+- `dist/git.exe`
+- `dist/bash.exe`
+- `dist/sh.exe`
+
+The project is compiled with `bun build --compile --target=bun-windows-x64`, so you can cross-compile the Windows binaries from Linux/macOS as well. The runtime is embedded, so the resulting `.exe` files run on Windows without Bun installed.
+
+> Compiled binaries are distributed through GitHub Releases (versioning still to be defined), so you normally do not need to build them yourself.
+
 ## License
 
 Apache 2.0
