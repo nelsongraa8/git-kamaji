@@ -4,7 +4,7 @@ import { Logger } from "./services/logger";
 import { WslPathTranslator } from "./strategies/wsl-translator";
 
 // --- Bootstrap --- //
-const DISTRO = "Ubuntu";
+const DISTRO = "openSUSE-Tumbleweed-Custom";
 
 const filename = "gitkamaji.log";
 const logger = new Logger(filename);

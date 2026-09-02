@@ -1,7 +1,7 @@
 const { spawnSync } = require("child_process");
 
 const args = process.argv.slice(2);
-const DISTRO_NAME = "Ubuntu";
+const DISTRO_NAME = "openSUSE-Tumbleweed-Custom";
 
 function windowsToWsl(p: string): string {
   if (!p) return p;

@@ -1,6 +1,6 @@
 const { spawnSync } = require("child_process");
 
-const DISTRO_NAME = "Ubuntu";
+const DISTRO_NAME = "openSUSE-Tumbleweed-Custom";
 
 const wslArgs = ["-d", DISTRO_NAME, "--", ...process.argv.slice(2)];
 
