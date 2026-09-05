@@ -1,11 +1,31 @@
 {
   "name": "git-kamaji",
+  "version": "0.1.0",
+  "description": "Lets Windows Git clients run all Git operations transparently inside WSL by translating commands and normalizing paths.",
   "module": "src/index.ts",
   "type": "module",
+  "private": true,
   "scripts": {
-    "build:git": "bun build src/git.ts --compile --target=bun-x64 --outfile C:/Users/nelso/Documents/Projects/git-custom/git/bin/git.exe",
-    "build:bash": "bun build src/cli/bash.ts --compile --target=bun-x64 --outfile C:/Users/nelso/Documents/Projects/git-custom/git/bin/bash.exe",
-    "build:sh": "bun build src/cli/sh.ts --compile --target=bun-x64 --outfile C:/Users/nelso/Documents/Projects/git-custom/git/bin/sh.exe"
+    "build": "bun run build:git && bun run build:bash && bun run build:sh",
+    "build:git": "mkdir -p dist && bun build src/git.ts --compile --target=bun-windows-x64 --outfile ./dist/git.exe",
+    "build:bash": "mkdir -p dist && bun build src/cli/bash.ts --compile --target=bun-windows-x64 --outfile ./dist/bash.exe",
+    "build:sh": "mkdir -p dist && bun build src/cli/sh.ts --compile --target=bun-windows-x64 --outfile ./dist/sh.exe"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/<usuario>/git-kamaji.git"
+  },
+  "keywords": [
+    "git",
+    "wsl",
+    "windows",
+    "cli",
+    "bun"
+  ],
+  "author": "Nelson R. Graña Vivas",
+  "license": "Apache-2.0",
+  "engines": {
+    "bun": ">=1.0"
   },
   "devDependencies": {
     "@types/bun": "latest",
