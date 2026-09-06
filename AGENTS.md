@@ -48,3 +48,4 @@ Al añadir código nuevo, respeta esta separación de capas.
 
 1. **Object Mother:** todos los datos de prueba se crean mediante object mothers; no construyas objetos de test "a mano" dentro de cada caso.
 2. **Un solo `expect` por test:** cada test debe verificar exactamente una cosa. Evita acumular múltiples `expect` en un mismo test.
+3. **Un spec por archivo:** cada archivo de test debe cubrir una única unidad bajo prueba. No mezcles varias clases, casos de uso o capas en el mismo archivo.
