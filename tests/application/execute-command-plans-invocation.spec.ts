@@ -1,4 +1,4 @@
-import { expect, test } from "bun:test";
+import { describe, expect, test } from "bun:test";
 import { ExecuteCommandUseCase } from "../../src/context/command-proxy/application/use-cases/execute-command.use-case";
 import type { ExecutionPlan } from "../../src/context/command-proxy/domain/value-objects/execution-plan";
 import { commandProxyMother } from "../mothers/command-proxy.mother";
@@ -16,14 +16,16 @@ class LoggerFake {
   log(): void {}
 }
 
-test("plans the command according to its kind", () => {
-  const executor = new ExecutorFake();
-  const useCase = new ExecuteCommandUseCase(executor, new LoggerFake());
+describe("ExecuteCommandUseCase planning", () => {
+  test("plans the command according to its kind", () => {
+    const executor = new ExecutorFake();
+    const useCase = new ExecuteCommandUseCase(executor, new LoggerFake());
 
-  useCase.execute(
-    commandProxyMother.shInvocation(),
-    commandProxyMother.configuration(),
-  );
+    useCase.execute(
+      commandProxyMother.shInvocation(),
+      commandProxyMother.configuration(),
+    );
 
-  expect(executor.receivedPlan?.mode).toBe("shell");
+    expect(executor.receivedPlan?.mode).toBe("shell");
+  });
 });

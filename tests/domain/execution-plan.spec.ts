@@ -1,10 +1,12 @@
-import { expect, test } from "bun:test";
+import { describe, expect, test } from "bun:test";
 import { commandProxyMother } from "../mothers/command-proxy.mother";
 
-test("creates a valid Linux execution plan", () => {
-  const actual = commandProxyMother.plan();
+describe("ExecutionPlan", () => {
+  test("creates a valid Linux execution plan", () => {
+    const actual = commandProxyMother.plan();
 
-  expect(actual.distribution?.value).toBe(
-    commandProxyMother.expected.distribution(),
-  );
+    expect(actual.distribution?.value).toBe(
+      commandProxyMother.expected.distribution(),
+    );
+  });
 });

@@ -1,4 +1,4 @@
-import { expect, test } from "bun:test";
+import { describe, expect, test } from "bun:test";
 import { ExecuteCommandUseCase } from "../../src/context/command-proxy/application/use-cases/execute-command.use-case";
 import type { ExecutionPlan } from "../../src/context/command-proxy/domain/value-objects/execution-plan";
 import { commandProxyMother } from "../mothers/command-proxy.mother";
@@ -21,16 +21,18 @@ class LoggerFake {
   }
 }
 
-test("logs the original command arguments", () => {
-  const logger = new LoggerFake();
-  const useCase = new ExecuteCommandUseCase(new ExecutorFake(), logger);
+describe("ExecuteCommandUseCase logging", () => {
+  test("logs the original command arguments", () => {
+    const logger = new LoggerFake();
+    const useCase = new ExecuteCommandUseCase(new ExecutorFake(), logger);
 
-  useCase.execute(
-    commandProxyMother.bashInvocation(),
-    commandProxyMother.configuration(),
-  );
+    useCase.execute(
+      commandProxyMother.bashInvocation(),
+      commandProxyMother.configuration(),
+    );
 
-  expect(logger.receivedArguments).toEqual(
-    commandProxyMother.expected.shellArguments(),
-  );
+    expect(logger.receivedArguments).toEqual(
+      commandProxyMother.expected.shellArguments(),
+    );
+  });
 });
