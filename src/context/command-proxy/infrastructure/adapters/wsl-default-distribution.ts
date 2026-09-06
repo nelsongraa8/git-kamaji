@@ -8,17 +8,26 @@ export class WslDefaultDistribution implements DefaultDistributionPort {
     private readonly outputMapper = new WslDistributionOutputMapper(),
   ) {}
 
+  resolveFromOutput(stdout: string | Buffer | null): LinuxDistribution {
+    const distribution = this.outputMapper.map(stdout);
+
+    if (!distribution) {
+      throw new Error("Unable to determine the default WSL distribution");
+    }
+
+    return LinuxDistribution.from(distribution);
+  }
+
   resolve(): LinuxDistribution {
     const result = spawnSync("wsl", ["-l", "-v"], {
       encoding: "utf-8",
       windowsHide: true,
     });
-    const distribution = this.outputMapper.map(result.stdout);
 
-    if (result.status !== 0 || !distribution) {
+    if (result.status !== 0) {
       throw new Error("Unable to determine the default WSL distribution");
     }
 
-    return LinuxDistribution.from(distribution);
+    return this.resolveFromOutput(result.stdout);
   }
 }
