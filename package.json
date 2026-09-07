@@ -10,6 +10,7 @@
     "build:git": "mkdir -p dist && rm -f dist/git.exe && bun build src/app/entrypoints/git.ts --compile --target=bun-windows-x64 --outfile ./dist/git.exe",
     "build:bash": "mkdir -p dist && rm -f dist/bash.exe && bun build src/app/entrypoints/bash.ts --compile --target=bun-windows-x64 --outfile ./dist/bash.exe",
     "build:sh": "mkdir -p dist && rm -f dist/sh.exe && bun build src/app/entrypoints/sh.ts --compile --target=bun-windows-x64 --outfile ./dist/sh.exe",
+    "typecheck": "tsc --noEmit",
     "test": "bun test"
   },
   "repository": {
