@@ -3,8 +3,10 @@ import { ExecuteCommandUseCase } from "../../src/context/command-proxy/applicati
 import { commandProxyMother } from "../mothers/command-proxy.mother";
 
 class ExecutorFake {
+  constructor(private readonly exitCode: number) {}
+
   execute(): number {
-    return 0;
+    return this.exitCode;
   }
 }
 
@@ -15,7 +17,7 @@ class LoggerFake {
 describe("ExecuteCommandUseCase exit code", () => {
   test("returns the executor exit code", () => {
     const useCase = new ExecuteCommandUseCase(
-      new ExecutorFake(),
+      new ExecutorFake(commandProxyMother.expected.nonZeroExitCode()),
       new LoggerFake(),
     );
 
@@ -24,6 +26,6 @@ describe("ExecuteCommandUseCase exit code", () => {
       commandProxyMother.configuration(),
     );
 
-    expect(actual).toBe(commandProxyMother.expected.exitCode());
+    expect(actual).toBe(commandProxyMother.expected.nonZeroExitCode());
   });
 });
