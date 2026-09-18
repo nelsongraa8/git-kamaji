@@ -1,17 +1,33 @@
 import { ExecuteCommandUseCase } from "../../context/command-proxy/application/use-cases/execute-command.use-case";
 import { CommandInvocation } from "../../context/command-proxy/domain/value-objects/command-invocation";
+import { CommandExecutor } from "../../context/command-proxy/infrastructure/adapters/command-executor";
+import { ConfigFileReader } from "../../context/command-proxy/infrastructure/adapters/config-file-reader";
+import { ConfigResolver } from "../../context/command-proxy/infrastructure/adapters/config-resolver";
+import { HostCommandExecutor } from "../../context/command-proxy/infrastructure/adapters/host-command-executor";
+import { JsonGitKamajiConfigMapper } from "../../context/command-proxy/infrastructure/mappers/json-git-kamaji-config.mapper";
+import { GitKamajiConfigNormalizer } from "../../context/command-proxy/infrastructure/mappers/git-kamaji-config.normalizer";
 import { WslCommandExecutor } from "../../context/command-proxy/infrastructure/adapters/wsl-command-executor";
-import { FileCommandLogger } from "../../context/command-proxy/infrastructure/adapters/file-command-logger";
-import { defaultConfiguration } from "./configuration";
+import {
+  commandLoggerFrom,
+  configurationFrom,
+  requiresDefaultDistribution,
+} from "./configuration";
 import { WslDefaultDistribution } from "../../context/command-proxy/infrastructure/adapters/wsl-default-distribution";
 
-const useCase = new ExecuteCommandUseCase(
-  new WslCommandExecutor(),
-  new FileCommandLogger("gitkamaji.log"),
+const configResolver = new ConfigResolver(
+  new ConfigFileReader(),
+  new GitKamajiConfigNormalizer([new JsonGitKamajiConfigMapper()]),
 );
-const distribution = new WslDefaultDistribution().resolve();
+const config = await configResolver.resolve(process.cwd());
+const distribution = requiresDefaultDistribution(config)
+  ? new WslDefaultDistribution().resolve()
+  : undefined;
+const useCase = new ExecuteCommandUseCase(
+  new CommandExecutor(new WslCommandExecutor(), new HostCommandExecutor()),
+  commandLoggerFrom(config),
+);
 const exitCode = useCase.execute(
   CommandInvocation.create("git", process.argv.slice(2)),
-  defaultConfiguration(distribution),
+  configurationFrom(config, distribution),
 );
 process.exitCode = exitCode;
