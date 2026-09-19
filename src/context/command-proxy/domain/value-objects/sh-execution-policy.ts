@@ -3,7 +3,7 @@ import type { LinuxDistribution } from "./linux-distribution";
 import type { Executable } from "./executable";
 
 export type ShExecutionPolicy = Readonly<{
-  distribution: LinuxDistribution;
+  distribution?: LinuxDistribution;
   executable: Executable;
   translation: ArgumentTranslationPolicy;
 }>;
