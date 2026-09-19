@@ -23,7 +23,13 @@ describeE2E("bash.exe E2E", () => {
     expect(harness.readWslTrace()).toEqual([
       { args: ["-l", "-v"], cwd: harness.workingDir },
       {
-        args: ["-d", "Ubuntu", "bash", ...e2eMother.arguments.bashCommand()],
+        args: [
+          "-d",
+          "Ubuntu",
+          "--",
+          "bash",
+          ...e2eMother.arguments.bashCommand(),
+        ],
         cwd: harness.workingDir,
       },
     ]);
