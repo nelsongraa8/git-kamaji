@@ -38,6 +38,26 @@ export const commandProxyMother = {
         translation: "shell-aware",
       },
     ),
+  windowsConfiguration: () =>
+    new ProjectConfiguration(
+      commandProxyMother.projectRoot(),
+      {
+        target: "host",
+        executable: commandProxyMother.executable("git.exe"),
+        mode: "direct",
+        translation: "preserve",
+      },
+      {
+        target: "linux",
+        distribution,
+        executable: commandProxyMother.executable("bash"),
+      },
+      {
+        distribution,
+        executable: commandProxyMother.executable("sh"),
+        translation: "shell-aware",
+      },
+    ),
   plan: () =>
     new ExecutionPlan(
       commandProxyMother.executable(),
@@ -61,6 +81,12 @@ export const commandProxyMother = {
     distribution: () => "Ubuntu",
     opensuseDistribution: () => "openSUSE-Tumbleweed",
     exitCode: () => 0,
+    nonZeroExitCode: () => 23,
     shellArguments: () => ["--version"],
+    specialArguments: () => [
+      "path with spaces\\repo",
+      'quoted "argument"',
+      "C:\\workspace\\repo",
+    ],
   },
 };

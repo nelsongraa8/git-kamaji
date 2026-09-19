@@ -3,10 +3,28 @@ import { CommandArguments } from "../../src/context/command-proxy/domain/value-o
 import { commandProxyMother } from "../mothers/command-proxy.mother";
 
 describe("CommandArguments", () => {
+  test("creates an empty argument collection", () => {
+    const actual = CommandArguments.from([]);
+
+    expect(actual.values).toEqual([]);
+  });
+
   test("copies command arguments on creation", () => {
     const source = commandProxyMother.expected.shellArguments();
     const actual = CommandArguments.from(source);
 
-    expect(actual.values).toEqual(source);
+    source.push("mutated");
+
+    expect(actual.values).toEqual(commandProxyMother.expected.shellArguments());
+  });
+
+  test("preserves spaces quotes and Windows paths", () => {
+    const actual = CommandArguments.from(
+      commandProxyMother.expected.specialArguments(),
+    );
+
+    expect(actual.values).toEqual(
+      commandProxyMother.expected.specialArguments(),
+    );
   });
 });

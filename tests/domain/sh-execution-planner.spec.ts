@@ -3,12 +3,28 @@ import { ShExecutionPlanner } from "../../src/context/command-proxy/domain/servi
 import { commandProxyMother } from "../mothers/command-proxy.mother";
 
 describe("ShExecutionPlanner", () => {
-  test("plans Sh as a shell-aware execution", () => {
+  test("creates the complete shell-aware Sh WSL execution plan", () => {
     const plan = new ShExecutionPlanner().plan(
-      commandProxyMother.shInvocation(),
+      commandProxyMother.shInvocation(
+        commandProxyMother.expected.specialArguments(),
+      ),
       commandProxyMother.configuration(),
     );
 
-    expect(plan.translation).toBe("shell-aware");
+    expect({
+      executable: plan.executable.value,
+      arguments: plan.planArguments,
+      target: plan.target,
+      distribution: plan.distribution?.value,
+      mode: plan.mode,
+      translation: plan.translation,
+    }).toEqual({
+      executable: "sh",
+      arguments: commandProxyMother.expected.specialArguments(),
+      target: "linux",
+      distribution: commandProxyMother.expected.distribution(),
+      mode: "shell",
+      translation: "shell-aware",
+    });
   });
 });
