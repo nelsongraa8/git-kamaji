@@ -83,4 +83,4 @@ jobs:
           Write-Host "WSL available: ${{ steps.wsl.outputs.available }}"
 
       - name: Run compiled binary E2E tests
-        run: bun run test:e2e
+        run: bun run test:e2e:ci

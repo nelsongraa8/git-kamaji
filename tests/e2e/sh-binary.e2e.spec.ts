@@ -1,8 +1,9 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { CliTestHarness } from "./cli-test-harness";
+import { runsInGithubActionsWindows } from "./ci-only";
 import { e2eMother } from "./e2e.mother";
 
-const describeE2E = process.platform === "win32" ? describe : describe.skip;
+const describeE2E = runsInGithubActionsWindows ? describe : describe.skip;
 
 describeE2E("sh.exe E2E", () => {
   let harness: CliTestHarness;

@@ -11,7 +11,7 @@
     "build:bash": "mkdir -p dist && rm -f dist/bash.exe && bun build src/app/entrypoints/bash.ts --compile --target=bun-windows-x64 --outfile ./dist/bash.exe",
     "build:sh": "mkdir -p dist && rm -f dist/sh.exe && bun build src/app/entrypoints/sh.ts --compile --target=bun-windows-x64 --outfile ./dist/sh.exe",
     "build:e2e-mocks": "bun build tests/e2e/mocks/git.ts --compile --target=bun-windows-x64 --outfile ./dist/e2e-mock-git.exe && bun build tests/e2e/mocks/wsl.ts --compile --target=bun-windows-x64 --outfile ./dist/e2e-mock-wsl.exe",
-    "test:e2e": "bun run build && bun run build:e2e-mocks && bun test tests/e2e",
+    "test:e2e:ci": "bun run build && bun run build:e2e-mocks && bun test tests/e2e",
     "package": "bun run scripts/package.ts",
     "typecheck": "tsc --noEmit",
     "test": "bun test"
