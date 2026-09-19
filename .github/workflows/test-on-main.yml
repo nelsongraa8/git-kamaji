@@ -29,3 +29,58 @@ jobs:
 
       - name: Run tests
         run: bun test
+
+  e2e-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Verify Windows runner
+        shell: pwsh
+        run: |
+          if ($env:OS -ne "Windows_NT") {
+            Write-Error "The E2E suite must run on a Windows runner."
+            exit 1
+          }
+
+      - name: Detect WSL availability
+        id: wsl
+        shell: pwsh
+        run: |
+          $wsl = Get-Command wsl.exe -ErrorAction SilentlyContinue
+
+          if ($null -eq $wsl) {
+            "available=false" >> $env:GITHUB_OUTPUT
+            Write-Host "WSL executable is not available on this runner."
+            exit 0
+          }
+
+          & wsl.exe --status
+          $statusExitCode = $LASTEXITCODE
+          $distributions = @(& wsl.exe --list --quiet 2>$null)
+
+          if ($statusExitCode -eq 0 -and $distributions.Count -gt 0) {
+            "available=true" >> $env:GITHUB_OUTPUT
+            Write-Host "WSL is available with $($distributions.Count) distribution(s)."
+          } else {
+            "available=false" >> $env:GITHUB_OUTPUT
+            Write-Host "WSL is not ready; mock-based E2E tests will still run."
+          }
+
+      - name: Show WSL detection result
+        shell: pwsh
+        run: |
+          Write-Host "WSL available: ${{ steps.wsl.outputs.available }}"
+
+      - name: Run compiled binary E2E tests
+        run: bun run test:e2e
