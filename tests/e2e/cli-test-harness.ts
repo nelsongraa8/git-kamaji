@@ -52,8 +52,9 @@ export class CliTestHarness {
   }
 
   createGlobalConfig(content: object | string): void {
-    mkdirSync(this.globalProfileDir, { recursive: true });
-    this.writeConfig(this.globalProfileDir, content);
+    const globalConfigDir = join(this.globalProfileDir, ".gitkamaji");
+    mkdirSync(globalConfigDir, { recursive: true });
+    this.writeConfig(globalConfigDir, content);
   }
 
   private writeConfig(directory: string, content: object | string): void {

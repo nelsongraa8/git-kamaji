@@ -87,6 +87,40 @@ describe("ConfigResolver", () => {
     ]);
   });
 
+  test("resolves project configuration from a Windows UNC path", async () => {
+    const projectRoot =
+      "\\\\wsl.localhost\\openSUSE-Tumbleweed\\home\\nelsongraa8\\apps\\card-embedding-recognition";
+    const localFile = `${projectRoot}\\.git-kamajirc.json`;
+    const reader = new ConfigFileReaderFake({
+      [localFile]: gitKamajiConfigMother.wslJson(),
+    });
+    const resolver = new ConfigResolver(reader, normalizer, undefined);
+
+    await resolver.resolve(projectRoot);
+
+    expect(reader.existsCalls).toEqual([localFile]);
+  });
+
+  test("prefers local configuration over USERPROFILE for a Windows UNC path", async () => {
+    const projectRoot =
+      "\\\\wsl.localhost\\openSUSE-Tumbleweed\\home\\nelsongraa8\\apps\\card-embedding-recognition";
+    const localFile = `${projectRoot}\\.git-kamajirc.json`;
+    const globalFile = "C:\\Users\\nelsongraa8\\.git-kamajirc.json";
+    const reader = new ConfigFileReaderFake({
+      [localFile]: gitKamajiConfigMother.wslJson(),
+      [globalFile]: gitKamajiConfigMother.wslJson("Debian"),
+    });
+    const resolver = new ConfigResolver(
+      reader,
+      normalizer,
+      "C:\\Users\\nelsongraa8",
+    );
+
+    const config = await resolver.resolve(projectRoot);
+
+    expect(config).toEqual(gitKamajiConfigMother.wsl());
+  });
+
   test("does not fall back to global configuration when local configuration is invalid", async () => {
     const reader = new ConfigFileReaderFake({
       "/project/.git-kamajirc.json":
