@@ -1,6 +1,6 @@
 {
   "name": "git-kamaji",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Lets Windows Git clients run all Git operations transparently inside WSL by translating commands and normalizing paths.",
   "module": "src/index.ts",
   "type": "module",
